@@ -8,7 +8,7 @@ export default (props) => {
         <div className="h-100 ">
             <Header account={props.account} />
             <br></br>
-            <h4 className="text-center text-secondary">Ethereum based appointment system</h4>
+            <h4 className="text-center text-secondary">Ethereum based Appointment System</h4>
             {props.children}
             <Footer />
         </div>

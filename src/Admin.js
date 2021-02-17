@@ -31,7 +31,7 @@ class Admin extends Component {
                         {this.props.appointmentCount == 0 ? 
                         <button className="btn btn-sm btn-secondary ml-2" onClick={this.handleModalShowHide1}><PencilFill /></button> 
                         :  
-                        <button className="btn btn-secondary m-2" onClick={this.props.finishAppointments}>Finish Appointments</button>
+                        <button className="btn btn-sm btn-secondary m-2" onClick={this.props.finishAppointments}>Finish Appointments</button>
 }
                     </p>
                 </div>

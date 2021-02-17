@@ -64,7 +64,7 @@ class App extends Component {
       if (isAdmin) {
         const appointmentCount = await appointment.methods.appointmentCount().call();
         this.setState({ appointmentCount });
-
+        this.setState({appointments: []});
         for (var i = 1; i <= appointmentCount; i++) {
           const apt = await appointment.methods.appointments(i).call();
           this.setState({ appointments: [...this.state.appointments, apt] });
@@ -82,7 +82,8 @@ class App extends Component {
   }
 
   refreshPage = () => {
-    window.location.reload(false);
+    // window.location.reload(false);
+    this.loadContractData();
   }
 
   createAppointment = async () => {
@@ -95,8 +96,7 @@ class App extends Component {
   };
 
   startAppointment = async (index, zoomLink) => {
-    console.log(index, zoomLink);
-    this.setState({ loading: true })
+    console.log(index, zoomLink); 
     const apt = this.state.appointments[index];
     this.state.appointment.methods.markInProgress(apt.patient, apt.slot, zoomLink)
       .send({ from: this.state.account })
@@ -106,8 +106,7 @@ class App extends Component {
       })
   }
 
-  endAppointment = async (index) => {
-    this.setState({ loading: true })
+  endAppointment = async (index) => { 
     const apt = this.state.appointments[index];
     this.state.appointment.methods.closeAppointment(apt.patient, apt.slot)
       .send({ from: this.state.account })
@@ -117,8 +116,7 @@ class App extends Component {
       })
   }
 
-  finishAppointments = async () => {
-    this.setState({ loading: true })
+  finishAppointments = async () => { 
     this.state.appointment.methods.completeAppointments()
       .send({ from: this.state.account })
       .once('receipt', (receipt) => {
@@ -127,23 +125,27 @@ class App extends Component {
       })
   }
 
-  setFees = async (fees) => {
-    this.setState({ loading: true })
+  setFees = async (fees) => { 
     this.state.appointment.methods.setfees(fees)
       .send({ from: this.state.account })
       .once('receipt', (receipt) => {
         this.setState({ loading: false }) 
+        this.refreshPage();
       })
   }
  
   render() {
     return (
-      this.state.loading ? null: 
+     
       <Layout account={this.state.account} >
  
         <br></br>
+
         <div className="container">
           {
+             this.state.loading ? 
+             <p>Loading...</p>
+             : 
             this.state.isAdmin ?
               <Admin 
                 setFees={this.setFees}
